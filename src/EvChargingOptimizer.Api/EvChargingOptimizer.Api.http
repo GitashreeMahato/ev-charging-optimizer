@@ -1,0 +1,6 @@
+@EvChargingOptimizer.Api_HostAddress = http://localhost:5181
+
+GET {{EvChargingOptimizer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
