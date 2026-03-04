@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvChargingOptimizer.Domain"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvChargingOptimizer.Application", "src\EvChargingOptimizer.Application\EvChargingOptimizer.Application.csproj", "{09FF3148-E011-4E58-BCB8-EE781BE3D692}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvChargingOptimizer.Infrastructure", "src\EvChargingOptimizer.Infrastructure\EvChargingOptimizer.Infrastructure.csproj", "{50FE4DC7-9F2F-4399-863F-EC8557A5EA66}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +34,15 @@ Global
 		{09FF3148-E011-4E58-BCB8-EE781BE3D692}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09FF3148-E011-4E58-BCB8-EE781BE3D692}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09FF3148-E011-4E58-BCB8-EE781BE3D692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50FE4DC7-9F2F-4399-863F-EC8557A5EA66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50FE4DC7-9F2F-4399-863F-EC8557A5EA66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50FE4DC7-9F2F-4399-863F-EC8557A5EA66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50FE4DC7-9F2F-4399-863F-EC8557A5EA66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{61F2AD2E-1DAE-4242-A4CC-1C6BC9AB2A39} = {28297C10-930F-4B39-A4F1-C5CEA04B5CDE}
 		{A467D639-CF66-4312-8FCD-1F8B82DECE99} = {28297C10-930F-4B39-A4F1-C5CEA04B5CDE}
 		{09FF3148-E011-4E58-BCB8-EE781BE3D692} = {28297C10-930F-4B39-A4F1-C5CEA04B5CDE}
+		{50FE4DC7-9F2F-4399-863F-EC8557A5EA66} = {28297C10-930F-4B39-A4F1-C5CEA04B5CDE}
 	EndGlobalSection
 EndGlobal
