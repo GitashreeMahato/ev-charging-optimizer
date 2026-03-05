@@ -10,4 +10,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EvChargingOptimizer.Application\EvChargingOptimizer.Application.csproj" />
+    <ProjectReference Include="..\EvChargingOptimizer.Infrastructure\EvChargingOptimizer.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
