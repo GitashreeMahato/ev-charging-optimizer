@@ -1,11 +1,18 @@
 using EvChargingOptimizer.Application.Interfaces;
 using EvChargingOptimizer.Infrastructure.Services;
+using EvChargingOptimizer.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//  Register AppDbContext
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register our service
 builder.Services.AddScoped<IChargingStationService, ChargingStationService>();
@@ -24,12 +31,7 @@ app.MapControllers();
 app.Run();
 
 
-// ## 5.3 — Create a real Controller
 
-// Create this file inside `src/EvChargingOptimizer.Api/Controllers/`:
-// ```
-// Controllers/
-// └── ChargingStationsController.cs
 
 
 
