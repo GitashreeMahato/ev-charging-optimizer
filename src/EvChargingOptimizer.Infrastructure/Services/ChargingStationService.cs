@@ -1,19 +1,19 @@
 using EvChargingOptimizer.Application.Interfaces;
 using EvChargingOptimizer.Domain.Entities;
-
+using EvChargingOptimizer.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 namespace EvChargingOptimizer.Infrastructure.Services;
 
 public class ChargingStationService : IChargingStationService
 {
-    public Task<IEnumerable<ChargingStation>> GetAllAsync()
-    {
-        // Fake data for now — real DB comes later
-        var stations = new List<ChargingStation>
-        {
-            new ChargingStation { Id = 1, Name = "Station A", Location = "New York", IsAvailable = true },
-            new ChargingStation { Id = 2, Name = "Station B", Location = "Los Angeles", IsAvailable = false }
-        };
 
-        return Task.FromResult<IEnumerable<ChargingStation>>(stations);
+    private readonly AppDbContext _context;
+    public ChargingStationService(AppDbContext context)
+    {
+        _context = context;
+    }
+    public async Task<IEnumerable<ChargingStation>> GetAllAsync()
+    {
+        return await _context.ChargingStations.ToListAsync();
     }
 }
