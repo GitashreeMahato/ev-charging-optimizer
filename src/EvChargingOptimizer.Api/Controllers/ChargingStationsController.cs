@@ -1,3 +1,4 @@
+using EvChargingOptimizer.Application.DTOs;
 using EvChargingOptimizer.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,5 +20,12 @@ public class ChargingStationsController : ControllerBase
     {
         var stations = await _service.GetAllAsync();
         return Ok(stations);
+    }
+    [HttpPost]
+    public async Task<IActionResult> Create(CreateChargingStationDto dto)
+    {
+        var station = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetAll), new { id = station.Id, station });
+
     }
 }
