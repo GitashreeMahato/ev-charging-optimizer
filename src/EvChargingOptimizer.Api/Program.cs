@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Register our service
 builder.Services.AddScoped<IChargingStationService, ChargingStationService>();
+builder.Services.AddScoped<IUserVehicleService, UserVehicleService>();
 
 var app = builder.Build();
 
