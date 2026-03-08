@@ -10,4 +10,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<ChargingStation> ChargingStations => Set<ChargingStation>();
+    public DbSet<UserVehicle> UserVehicles => Set<UserVehicle>();
+    public DbSet<ChargingSession> ChargingSessions => Set<ChargingSession>();
+    public DbSet<ElectricityPrice> ElectricityPrices => Set<ElectricityPrice>();
 }
