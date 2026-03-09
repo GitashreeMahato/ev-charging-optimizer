@@ -10,47 +10,47 @@ public class ElectricityPriceService : IElectricityPriceService
 {
     private readonly AppDbContext _context;
 
+    private static readonly TimeZoneInfo CetZone =
+        TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
+
     public ElectricityPriceService(AppDbContext context)
     {
         _context = context;
     }
 
+    private ElectricityPriceResponseDto MapToDto(ElectricityPrice e) => new()
+    {
+        Id = e.Id,
+        StartTimeUtc = e.StartTime,
+        EndTimeUtc = e.EndTime,
+        StartTimeCet = TimeZoneInfo.ConvertTimeFromUtc(e.StartTime, CetZone)
+            .ToString("yyyy-MM-dd HH:mm:ss zzz"),
+        EndTimeCet = TimeZoneInfo.ConvertTimeFromUtc(e.EndTime, CetZone)
+            .ToString("yyyy-MM-dd HH:mm:ss zzz"),
+        PricePerKwh = e.PricePerKwh,
+        Currency = e.Currency,
+        Region = e.Region
+    };
+
     public async Task<IEnumerable<ElectricityPriceResponseDto>> GetAllAsync()
     {
-        return await _context.ElectricityPrices
-            .Select(p => new ElectricityPriceResponseDto
-            {
-                Id = p.Id,
-                StartTime = p.StartTime,
-                EndTime = p.EndTime,
-                PricePerKwh = p.PricePerKwh,
-                Currency = p.Currency,
-                Region = p.Region
-            }).ToListAsync();
+        var prices = await _context.ElectricityPrices.ToListAsync();
+        return prices.Select(MapToDto);
     }
 
     public async Task<ElectricityPriceResponseDto?> GetByIdAsync(int id)
     {
         var price = await _context.ElectricityPrices.FindAsync(id);
         if (price == null) return null;
-
-        return new ElectricityPriceResponseDto
-        {
-            Id = price.Id,
-            StartTime = price.StartTime,
-            EndTime = price.EndTime,
-            PricePerKwh = price.PricePerKwh,
-            Currency = price.Currency,
-            Region = price.Region
-        };
+        return MapToDto(price);
     }
 
     public async Task<ElectricityPriceResponseDto> CreateAsync(CreateElectricityPriceDto dto)
     {
         var price = new ElectricityPrice
         {
-            StartTime = dto.StartTime,
-            EndTime = dto.EndTime,
+            StartTime = dto.StartTime.ToUniversalTime(),
+            EndTime = dto.EndTime.ToUniversalTime(),
             PricePerKwh = dto.PricePerKwh,
             Currency = dto.Currency,
             Region = dto.Region
@@ -58,16 +58,7 @@ public class ElectricityPriceService : IElectricityPriceService
 
         _context.ElectricityPrices.Add(price);
         await _context.SaveChangesAsync();
-
-        return new ElectricityPriceResponseDto
-        {
-            Id = price.Id,
-            StartTime = price.StartTime,
-            EndTime = price.EndTime,
-            PricePerKwh = price.PricePerKwh,
-            Currency = price.Currency,
-            Region = price.Region
-        };
+        return MapToDto(price);
     }
 
     public async Task<ElectricityPriceResponseDto?> UpdateAsync(int id, CreateElectricityPriceDto dto)
@@ -75,23 +66,14 @@ public class ElectricityPriceService : IElectricityPriceService
         var price = await _context.ElectricityPrices.FindAsync(id);
         if (price == null) return null;
 
-        price.StartTime = dto.StartTime;
-        price.EndTime = dto.EndTime;
+        price.StartTime = dto.StartTime.ToUniversalTime();
+        price.EndTime = dto.EndTime.ToUniversalTime();
         price.PricePerKwh = dto.PricePerKwh;
         price.Currency = dto.Currency;
         price.Region = dto.Region;
 
         await _context.SaveChangesAsync();
-
-        return new ElectricityPriceResponseDto
-        {
-            Id = price.Id,
-            StartTime = price.StartTime,
-            EndTime = price.EndTime,
-            PricePerKwh = price.PricePerKwh,
-            Currency = price.Currency,
-            Region = price.Region
-        };
+        return MapToDto(price);
     }
 
     public async Task<bool> DeleteAsync(int id)

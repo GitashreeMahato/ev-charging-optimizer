@@ -4,6 +4,9 @@ using EvChargingOptimizer.Infrastructure.Services;
 using EvChargingOptimizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
+// convert UTC to local time
+// AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -15,12 +18,13 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Tibber settings
-builder.Services.Configure<TibberSettings>(
-    builder.Configuration.GetSection("Tibber"));
+// SpotPrice settings
+builder.Services.Configure<SpotPriceSettings>(
+    builder.Configuration.GetSection("SpotPrice"));
 
-// HttpClient for Tibber
-builder.Services.AddHttpClient<IExternalPriceService, TibberPriceService>();
+// HttpClient for SpotPrice
+builder.Services.AddHttpClient<IExternalPriceService, SpotPriceService>();
+
 // Register our service
 builder.Services.AddScoped<IChargingStationService, ChargingStationService>();
 builder.Services.AddScoped<IUserVehicleService, UserVehicleService>();
