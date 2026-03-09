@@ -18,6 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IChargingStationService, ChargingStationService>();
 builder.Services.AddScoped<IUserVehicleService, UserVehicleService>();
 builder.Services.AddScoped<IChargingSessionService, ChargingSessionService>();
+builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
 
 var app = builder.Build();
 
