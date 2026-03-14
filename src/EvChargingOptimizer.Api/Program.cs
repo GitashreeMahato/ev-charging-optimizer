@@ -3,8 +3,10 @@ using EvChargingOptimizer.Application.Settings;
 using EvChargingOptimizer.Infrastructure.Services;
 using EvChargingOptimizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 // convert UTC to local time
 // AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -34,6 +36,27 @@ builder.Services.AddScoped<IChargingSessionService, ChargingSessionService>();
 builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
 builder.Services.AddScoped<IOptimizerService, OptimizerService>();
 builder.Services.AddHostedService<PriceUpdateBackgroundService>();
+// Register AuthService
+builder.Services.AddScoped<IAuthService, AuthService>();
+
+// JWT Authentication
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -43,6 +66,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // Removed UseHttpsRedirection to avoid warning
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
