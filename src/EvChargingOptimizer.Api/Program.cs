@@ -3,6 +3,7 @@ using EvChargingOptimizer.Application.Settings;
 using EvChargingOptimizer.Infrastructure.Services;
 using EvChargingOptimizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 // convert UTC to local time
 // AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -31,6 +32,7 @@ builder.Services.AddScoped<IUserVehicleService, UserVehicleService>();
 builder.Services.AddScoped<IChargingSessionService, ChargingSessionService>();
 builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
 builder.Services.AddScoped<IOptimizerService, OptimizerService>();
+builder.Services.AddHostedService<PriceUpdateBackgroundService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

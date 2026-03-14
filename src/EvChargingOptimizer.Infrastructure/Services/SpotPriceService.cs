@@ -44,14 +44,23 @@ public class SpotPriceService : IExternalPriceService
         var spotResponse = JsonSerializer.Deserialize<SpotPriceResponseDto>(json, options);
         Console.WriteLine("Data points count: " + (spotResponse?.Data?.Count ?? 0));
 
-        var today = DateTime.UtcNow.Date;
+        // var today = DateTime.UtcNow.Date;
 
-        // Filter only today's prices
+        // After 14:00 CET, fetch tomorrow's prices. Before 14:00, fetch today's prices.
+        var cetNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, CetZone);
+        var targetDate = cetNow.Hour >= 14 ?
+                        cetNow.Date.AddDays(1) // after 14:00 → fetch tomorrow
+                        : cetNow.Date; // before 14:00 → fetch today
+        var targetDateUtc = targetDate;
+        Console.WriteLine($"Fetching prices for: {targetDate:yyyy-MM-dd} (CET)");
+
+        // Filter prices for target date
         var todayPrices = spotResponse?.Data?
-            .Where(d => DateTime.Parse(d.St).ToUniversalTime().Date == today)
-            .ToList() ?? new List<SpotPriceDataPoint>();
+    .Where(d => DateTime.Parse(d.St).Date == targetDate)
+    .ToList() ?? new List<SpotPriceDataPoint>();
 
-        Console.WriteLine("Today's prices count: " + todayPrices.Count);
+        Console.WriteLine("Target date prices count: " + todayPrices.Count);
+
 
         var entities = todayPrices.Select(d =>
         {
@@ -68,9 +77,6 @@ public class SpotPriceService : IExternalPriceService
                 Region = "DE"
             };
         }).ToList();
-
-        //    _context.ElectricityPrices.AddRange(entities);
-        //     await _context.SaveChangesAsync();
 
         // avoid duplication
         foreach (var entity in entities)
