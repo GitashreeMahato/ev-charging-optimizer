@@ -4,6 +4,7 @@ using EvChargingOptimizer.Infrastructure.Services;
 using EvChargingOptimizer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 // convert UTC to local time
 // AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
@@ -44,6 +45,24 @@ if (app.Environment.IsDevelopment())
 // Removed UseHttpsRedirection to avoid warning
 app.UseAuthorization();
 app.MapControllers();
+
+// Auto-fetch prices on startup
+using (var scope = app.Services.CreateScope())
+{
+    var priceService = scope.ServiceProvider.GetRequiredService<IExternalPriceService>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        logger.LogInformation("Auto-fetching electricity prices on startup...");
+        var prices = await priceService.FetchTodayPricesAsync();
+        logger.LogInformation("Startup price fetch completed. Fetched {Count} prices.", prices.Count());
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "Startup price fetch failed. App will continue without latest prices.");
+    }
+}
+
 app.Run();
 
 
