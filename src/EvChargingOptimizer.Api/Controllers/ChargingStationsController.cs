@@ -33,7 +33,7 @@ public class ChargingStationsController : ControllerBase
     public async Task<IActionResult> Create(CreateChargingStationDto dto)
     {
         var station = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = station.Id, station });
+        return CreatedAtAction(nameof(GetById), new { id = station.Id }, station);
 
     }
     [HttpPut("{id}")]

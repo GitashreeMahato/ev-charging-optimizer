@@ -69,7 +69,18 @@ public class SpotPriceService : IExternalPriceService
             };
         }).ToList();
 
-        _context.ElectricityPrices.AddRange(entities);
+        //    _context.ElectricityPrices.AddRange(entities);
+        //     await _context.SaveChangesAsync();
+
+        // avoid duplication
+        foreach (var entity in entities)
+        {
+            var exists = _context.ElectricityPrices.Any(p => p.StartTime == entity.StartTime && p.Region == entity.Region);
+            if (!exists)
+            {
+                _context.ElectricityPrices.Add(entity);
+            }
+        }
         await _context.SaveChangesAsync();
 
         return entities.Select(e => new ElectricityPriceResponseDto

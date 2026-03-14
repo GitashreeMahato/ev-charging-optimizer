@@ -30,7 +30,7 @@ builder.Services.AddScoped<IChargingStationService, ChargingStationService>();
 builder.Services.AddScoped<IUserVehicleService, UserVehicleService>();
 builder.Services.AddScoped<IChargingSessionService, ChargingSessionService>();
 builder.Services.AddScoped<IElectricityPriceService, ElectricityPriceService>();
-
+builder.Services.AddScoped<IOptimizerService, OptimizerService>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())

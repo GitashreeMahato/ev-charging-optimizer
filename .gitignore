@@ -12,9 +12,9 @@ obj/
 .config/
 
 # Environment / secrets
-appsettings.Development.json
 *.user
-
+ 
+ 
 # OS
 Thumbs.db
 .DS_Store
