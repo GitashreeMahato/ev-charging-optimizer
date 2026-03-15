@@ -1,9 +1,11 @@
 using EvChargingOptimizer.Application.DTOs;
 using EvChargingOptimizer.Application.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EvChargingOptimizer.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class OptimizerController : ControllerBase
