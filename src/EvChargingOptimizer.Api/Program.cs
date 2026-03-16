@@ -122,6 +122,16 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Startup price fetch failed. App will continue without latest prices.");
     }
 }
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.Run();
 

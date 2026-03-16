@@ -153,7 +153,7 @@ function Stations() {
                     placeholder="0 = use live spot prices, e.g. 0.45 for public charger"
                     value={form.pricePerKwh}
                     onChange={(e) => setForm({ ...form, pricePerKwh: e.target.value })}
-                  />
+                 />
                 </div>
               </div>
 
