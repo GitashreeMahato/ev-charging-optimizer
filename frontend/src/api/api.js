@@ -30,6 +30,8 @@ export const getSessions = () => api.get('/ChargingSessions');
 
 // Vehicles
 export const getVehicles = () => api.get('/UserVehicles');
+export const createVehicle = (data) => api.post('/UserVehicles', data);
 
 // Stations
 export const getStations = () => api.get('/ChargingStations');
+export const createStation = (data) => api.post('/ChargingStations', data);

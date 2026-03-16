@@ -41,7 +41,7 @@ function Login() {
             <input
               style={styles.input}
               type="email"
-              placeholder="geet@example.com"
+              placeholder="Enter your email"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
               required

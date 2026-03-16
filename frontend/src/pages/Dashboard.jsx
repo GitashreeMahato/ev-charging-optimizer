@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
+import Navbar from '../components/Navbar';
 import { optimize, getPrices, getSessions, getVehicles, getStations } from '../api/api';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 function Dashboard() {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  // const navigate = useNavigate();
+  // const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const [vehicles, setVehicles] = useState([]);
   const [stations, setStations] = useState([]);
@@ -82,22 +83,16 @@ function Dashboard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('user');
+  //   navigate('/login');
+  // };
 
   return (
-    <div style={styles.container}>
-      {/* Navbar */}
-      <div style={styles.navbar}>
-        <h1 style={styles.navTitle}>⚡ EV Charging Optimizer</h1>
-        <div style={styles.navRight}>
-          <span style={styles.navUser}>👤 {user.fullName}</span>
-          <button style={styles.logoutBtn} onClick={handleLogout}>Logout</button>
-        </div>
-      </div>
+        <div style={styles.container}>
+      <Navbar />
+
 
       <div style={styles.content}>
 
